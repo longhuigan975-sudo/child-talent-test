@@ -1,0 +1,1128 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>儿童天赋偏向观察问卷</title>
+  <style>
+    :root {
+      --bg: #f6f8f7;
+      --surface: #ffffff;
+      --surface-soft: #eef6f2;
+      --text: #16211f;
+      --muted: #65736f;
+      --line: #dbe5e1;
+      --primary: #287965;
+      --primary-dark: #17604f;
+      --primary-soft: #dff0ea;
+      --coral: #d86f56;
+      --gold: #b98620;
+      --blue: #3b79a8;
+      --shadow: 0 18px 46px rgba(28, 55, 48, .10);
+      --radius: 8px;
+      --radius-lg: 12px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background:
+        linear-gradient(180deg, rgba(223, 240, 234, .65), rgba(246, 248, 247, 0) 310px),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    button, input, select {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+    }
+
+    .shell {
+      width: min(var(--max), calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 44px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), #56a98c);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      letter-spacing: 0;
+      flex: 0 0 auto;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(24px, 4vw, 38px);
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 8px 0 0;
+      color: var(--muted);
+      max-width: 720px;
+      font-size: 15px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    body.result-mode .layout {
+      grid-template-columns: 1fr;
+    }
+
+    body.result-mode .side {
+      display: none;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+    }
+
+    .side {
+      padding: 18px;
+      position: sticky;
+      top: 18px;
+    }
+
+    .side h2,
+    .card h2,
+    .result-section h2 {
+      margin: 0 0 12px;
+      font-size: 18px;
+      line-height: 1.25;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .age-grid {
+      display: grid;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .age-option,
+    .answer-option {
+      width: 100%;
+      text-align: left;
+      background: #fff;
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 12px 13px;
+      transition: border-color .18s ease, background .18s ease, transform .18s ease;
+    }
+
+    .age-option:hover,
+    .answer-option:hover {
+      border-color: rgba(40, 121, 101, .55);
+      background: #f9fcfb;
+    }
+
+    .age-option.active,
+    .answer-option.active {
+      border-color: var(--primary);
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      font-weight: 700;
+    }
+
+    .meta-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .meta-item {
+      border-top: 1px solid var(--line);
+      padding-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .main {
+      min-width: 0;
+    }
+
+    .hero {
+      padding: 28px;
+      margin-bottom: 18px;
+    }
+
+    .hero p {
+      margin: 12px 0 0;
+      color: var(--muted);
+    }
+
+    .start-row,
+    .nav-row,
+    .result-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-top: 18px;
+    }
+
+    .primary-btn,
+    .secondary-btn,
+    .ghost-btn {
+      min-height: 42px;
+      border-radius: var(--radius);
+      padding: 10px 15px;
+      font-weight: 700;
+    }
+
+    .primary-btn {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .primary-btn:hover {
+      background: var(--primary-dark);
+    }
+
+    .primary-btn:disabled {
+      background: #9eb8b1;
+      cursor: not-allowed;
+    }
+
+    .secondary-btn {
+      background: #fff;
+      color: var(--primary-dark);
+      border: 1px solid rgba(40, 121, 101, .35);
+    }
+
+    .ghost-btn {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid transparent;
+    }
+
+    .question-card {
+      padding: 24px;
+      min-height: 560px;
+      display: none;
+    }
+
+    .question-card.active,
+    .result-card.active {
+      display: block;
+    }
+
+    .progress-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .dimension-tag {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: var(--surface-soft);
+      color: var(--primary-dark);
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 18px;
+    }
+
+    .question-title {
+      margin: 0;
+      font-size: clamp(22px, 3vw, 30px);
+      line-height: 1.35;
+      letter-spacing: 0;
+    }
+
+    .answers {
+      display: grid;
+      gap: 9px;
+      margin-top: 24px;
+    }
+
+    .answer-option {
+      display: grid;
+      grid-template-columns: 30px minmax(0, 1fr);
+      gap: 9px;
+      align-items: start;
+    }
+
+    .answer-score {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #eef2f0;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .answer-option.active .answer-score {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .unknown-note {
+      margin-top: 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      border-radius: 999px;
+      padding: 4px 9px;
+      background: var(--surface-soft);
+      color: var(--primary-dark);
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .result-card {
+      display: none;
+      padding: 26px;
+    }
+
+    .result-hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) 240px;
+      gap: 22px;
+      align-items: center;
+      padding-bottom: 22px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .result-hero h2 {
+      font-size: clamp(24px, 4vw, 36px);
+      margin: 0 0 10px;
+      line-height: 1.18;
+    }
+
+    .top-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    .top-tag {
+      border-radius: 999px;
+      padding: 8px 11px;
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    canvas {
+      width: 100%;
+      max-width: 240px;
+      aspect-ratio: 1;
+      justify-self: center;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .result-section {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      background: #fff;
+    }
+
+    .score-table {
+      display: grid;
+      gap: 10px;
+    }
+
+    .score-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 52px 88px;
+      gap: 10px;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    .level {
+      justify-self: start;
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: 12px;
+      font-weight: 800;
+      background: #eef2f0;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .level.high { background: #dff0ea; color: var(--primary-dark); }
+    .level.good { background: #fff1d7; color: #825d12; }
+    .level.watch { background: #edf4fb; color: #2b6089; }
+    .level.low { background: #f3f0ed; color: #70665e; }
+    .level.limited { background: #f7e5df; color: #9a4935; }
+
+    .advice-block {
+      border-left: 4px solid var(--primary);
+      padding-left: 13px;
+      margin-top: 14px;
+    }
+
+    .advice-block h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+    }
+
+    .advice-block p,
+    .result-section p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .activity-list {
+      display: grid;
+      gap: 9px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .activity-list li {
+      padding: 10px 11px;
+      border-radius: var(--radius);
+      background: var(--surface-soft);
+      color: var(--primary-dark);
+      font-weight: 650;
+    }
+
+    .disclaimer {
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: var(--radius);
+      background: #f8f4ef;
+      color: #6d5945;
+      font-size: 13px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+      @media (max-width: 980px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      body.result-mode .layout {
+        grid-template-columns: 1fr;
+      }
+
+      body.test-mode .side {
+        display: none;
+      }
+
+      .side {
+        position: static;
+      }
+
+      .result-hero,
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+
+      canvas {
+        max-width: 300px;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .shell {
+        width: min(100% - 20px, var(--max));
+        padding-top: 16px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+      }
+
+      .hero,
+      .question-card,
+      .result-card {
+        padding: 18px;
+      }
+
+      .question-card {
+        min-height: auto;
+      }
+
+      .score-row {
+        grid-template-columns: 1fr;
+        gap: 5px;
+        padding-bottom: 9px;
+        border-bottom: 1px solid var(--line);
+      }
+    }
+
+    @media print {
+      body {
+        background: #fff;
+      }
+
+      .side,
+      .topbar,
+      .hero,
+      .question-card,
+      .result-actions {
+        display: none !important;
+      }
+
+      .shell {
+        width: 100%;
+        padding: 0;
+      }
+
+      .layout,
+      .result-grid,
+      .result-hero {
+        display: block;
+      }
+
+      .panel,
+      .result-section {
+        box-shadow: none;
+        border-color: #ddd;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="mark" aria-hidden="true">天</div>
+        <div>
+          <h1>儿童天赋偏向观察问卷</h1>
+          <p class="subtitle">由父母根据孩子最近 6 个月的日常表现填写，帮助观察孩子当前更明显的兴趣、能力和发展偏向。</p>
+        </div>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="panel side" aria-label="测试设置">
+        <h2>选择孩子年龄</h2>
+        <p class="small">年龄会影响结果建议的措辞，不直接改变分数。</p>
+        <div class="age-grid" id="ageGrid"></div>
+        <div class="meta-list">
+          <div class="meta-item"><strong>题量</strong><br>60题，10个观察维度</div>
+          <div class="meta-item"><strong>选项</strong><br>1到5分，未接触/不了解不计分</div>
+          <div class="meta-item"><strong>结果</strong><br>优势偏向、得分图、家庭建议</div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <section class="panel hero" id="intro">
+          <h2>温和建议，不给孩子贴标签</h2>
+          <p>这个问卷不是智力测试，也不是诊断量表。它更适合用来发现孩子可能愿意投入、值得继续提供机会的方向。</p>
+          <div class="start-row">
+            <button class="primary-btn" id="startBtn" type="button" disabled>开始测试</button>
+          </div>
+        </section>
+
+        <section class="panel question-card" id="questionCard" aria-live="polite">
+          <div class="progress-head">
+            <span id="questionCount">第 1 / 60 题</span>
+            <span id="remainingCount" class="pill">剩余 60 题</span>
+          </div>
+          <div class="dimension-tag" id="dimensionTag">语言表达与阅读理解</div>
+          <h2 class="question-title" id="questionText"></h2>
+          <div class="answers" id="answers"></div>
+          <p class="unknown-note">如果孩子没有接触过相关活动，或你不了解这个表现，可以选择“未接触/不了解”，该题不会计入该维度平均分。</p>
+          <div class="nav-row">
+            <button class="secondary-btn" id="prevBtn" type="button">上一题</button>
+            <button class="primary-btn" id="nextBtn" type="button">下一题</button>
+            <button class="ghost-btn" id="restartBtn" type="button">重新开始</button>
+          </div>
+        </section>
+
+        <section class="panel result-card" id="resultCard" aria-live="polite">
+          <div class="result-hero">
+            <div>
+              <h2 id="resultTitle">孩子的天赋偏向画像</h2>
+              <p class="small" id="resultIntro"></p>
+              <div class="top-tags" id="topTags"></div>
+            </div>
+            <canvas id="radar" width="480" height="480" aria-label="十个维度得分雷达图"></canvas>
+          </div>
+
+          <div class="result-grid">
+            <section class="result-section">
+              <h2>各维度得分</h2>
+              <div class="score-table" id="scoreTable"></div>
+            </section>
+            <section class="result-section">
+              <h2>综合建议</h2>
+              <p id="summaryAdvice"></p>
+              <div class="disclaimer">本结果属于家庭观察性筛查，不能替代智力测验、创造力测验、发展评估或心理测评。如果孩子在学习、情绪、社交或行为方面同时存在明显困扰，建议咨询儿童发展或教育心理专业人员。</div>
+            </section>
+          </div>
+
+          <div class="result-grid" id="adviceGrid"></div>
+
+          <div class="result-section" style="margin-top:16px;">
+            <h2>适合尝试的活动</h2>
+            <ul class="activity-list" id="activityList"></ul>
+          </div>
+
+          <div class="result-actions">
+            <button class="primary-btn" type="button" onclick="window.print()">打印结果</button>
+            <button class="secondary-btn" id="copyBtn" type="button">复制文字版结果</button>
+            <button class="secondary-btn" id="retakeBtn" type="button">重新测试</button>
+          </div>
+        </section>
+      </main>
+
+    </div>
+  </div>
+
+  <script>
+    const ageGroups = [
+      { id: "3-5", label: "3-5 岁", note: "重体验，保护兴趣" },
+      { id: "6-8", label: "6-8 岁", note: "多尝试，观察投入" },
+      { id: "9-12", label: "9-12 岁", note: "做项目，建立方法" },
+      { id: "13-15", label: "13-15 岁", note: "看持续性和方向" }
+    ];
+
+    const dimensions = [
+      {
+        id: "language",
+        name: "语言表达与阅读理解",
+        short: "语言",
+        color: "#287965",
+        description: "孩子可能在表达、理解、讲述、阅读或文字相关活动中更容易投入。",
+        advice: "多提供阅读、讲述、讨论和写作机会。家长可以让孩子复述故事、表达理由、改编情节，并关注他是否愿意持续表达，而不是只评价语言是否成熟。",
+        activities: ["亲子共读后复述故事", "家庭小辩论", "故事改编和角色采访"]
+      },
+      {
+        id: "logic",
+        name: "逻辑数学与问题解决",
+        short: "逻辑",
+        color: "#3b79a8",
+        description: "孩子可能对规律、因果、分类、计算、策略或解谜类任务较敏感。",
+        advice: "适合提供推理游戏、棋类、分类任务和生活中的问题解决情境。不要只用算题速度判断能力，更要观察孩子是否会解释思路和寻找方法。",
+        activities: ["棋类或策略游戏", "生活分类和预算任务", "推理谜题挑战"]
+      },
+      {
+        id: "spatial",
+        name: "空间视觉与结构建构",
+        short: "空间",
+        color: "#6d8f3e",
+        description: "孩子可能对形状、结构、方向、搭建、图像和物体关系有较强感受。",
+        advice: "多提供积木、模型、地图、拼图和结构设计任务。可以从自由搭建过渡到目标搭建，帮助孩子把脑中的想法做出来。",
+        activities: ["积木或乐高主题搭建", "迷宫和地图设计", "纸板模型制作"]
+      },
+      {
+        id: "creative",
+        name: "创造力与想象力",
+        short: "创造",
+        color: "#d86f56",
+        description: "孩子可能喜欢提出新想法、改造玩法、设计角色或尝试不同解决路径。",
+        advice: "保护孩子的发散想法，减少过早用标准答案限制。可以多问他怎么想到的、还有没有别的方法，再逐步帮助他完成和复盘。",
+        activities: ["开放式材料创作", "发明一个新游戏", "角色和世界观设计"]
+      },
+      {
+        id: "music",
+        name: "音乐节奏与声音感知",
+        short: "音乐",
+        color: "#b98620",
+        description: "孩子可能对旋律、节奏、音色或声音变化较敏感，并愿意用声音表达。",
+        advice: "先从低压力的听、唱、拍、编开始，不急于乐器考级。观察孩子是否会主动重复、模仿、改编或表达对声音的偏好。",
+        activities: ["节奏模仿游戏", "家庭歌单分享", "用物品做声音实验"]
+      },
+      {
+        id: "body",
+        name: "身体运动与操作协调",
+        short: "运动",
+        color: "#4b8f82",
+        description: "孩子可能在运动、动作学习、手部操作或身体表达方面更灵活。",
+        advice: "提供多样运动和手工体验，先观察孩子在哪类动作中更愿意练习。评价时关注协调、节奏、控制和投入，而不只是比赛结果。",
+        activities: ["球类和跳跃游戏", "舞蹈或体操体验", "手工工具练习"]
+      },
+      {
+        id: "nature",
+        name: "自然观察与科学探索",
+        short: "探索",
+        color: "#5d9448",
+        description: "孩子可能对自然现象、实验变化、材料工具或因果关系有较强好奇心。",
+        advice: "适合用可观察、可记录、可比较的小项目来培养。家长可以和孩子一起提出假设、记录变化，再讨论发现。",
+        activities: ["植物生长记录", "家庭小实验", "自然观察笔记"]
+      },
+      {
+        id: "social",
+        name: "人际理解与组织协作",
+        short: "人际",
+        color: "#7b6db1",
+        description: "孩子可能较能理解他人感受，或在同伴活动中愿意协调、组织和承担责任。",
+        advice: "这个维度不等于外向。内向孩子也可能有很强的人际理解力。可以观察他是否能理解别人的处境、帮助合作继续进行。",
+        activities: ["小组角色任务", "冲突情景讨论", "家庭活动小主持"]
+      },
+      {
+        id: "drive",
+        name: "专注投入与自我驱动",
+        short: "投入",
+        color: "#2f6f8f",
+        description: "孩子可能在真正感兴趣的事情上能持续投入、主动练习并尝试改进。",
+        advice: "重点观察主动性，而不是被催促后的表现。可以帮助孩子把大目标拆成小步骤，训练计划、收尾和复盘能力。",
+        activities: ["个人兴趣项目", "作品改进记录", "一周小目标计划"]
+      },
+      {
+        id: "aesthetic",
+        name: "情绪感受与审美表达",
+        short: "审美",
+        color: "#c05f74",
+        description: "孩子可能对美、故事、情绪、评价、公平或他人经历有较强感受。",
+        advice: "这代表感受力较强，不等于一定是艺术天赋。家长可以帮助孩子把感受转化为表达，也要关注他是否容易被评价或误解影响。",
+        activities: ["看展后表达感受", "音乐或绘画情绪日记", "故事人物心情讨论"]
+      }
+    ];
+
+    const questions = [
+      ["language", "孩子喜欢听故事、讲故事，或主动复述自己听过、看过的内容。"],
+      ["language", "孩子能用比较清楚的语言表达自己的想法、感受或理由。"],
+      ["language", "孩子对新词、成语、外语、文字游戏或书面表达表现出兴趣。"],
+      ["language", "孩子阅读、看绘本或听书时，能注意到细节，并提出自己的理解。"],
+      ["language", "孩子会主动编故事、改故事，或给人物、事件设计新的情节。"],
+      ["language", "孩子说明自己的想法时，常能说出理由、例子或自己的判断。"],
+      ["logic", "孩子喜欢数字、规律、分类、排序、比较或计算类活动。"],
+      ["logic", "孩子遇到问题时，会尝试分析原因，而不是只等待成人给答案。"],
+      ["logic", "孩子喜欢解谜、棋类、推理题、积木规则、编程或策略类游戏。"],
+      ["logic", "孩子能较快发现事情之间的因果关系或隐藏规律。"],
+      ["logic", "孩子做一件稍复杂的事时，会尝试安排步骤，或发现哪里可以更省力。"],
+      ["logic", "孩子对“为什么这样做”“有没有更好的办法”这类问题很感兴趣。"],
+      ["spatial", "孩子喜欢拼图、积木、乐高、模型、地图、迷宫或搭建类活动。"],
+      ["spatial", "孩子能较好地理解形状、方向、位置、距离或空间关系。"],
+      ["spatial", "孩子画图、搭建或布置物品时，常能表现出结构感或整体感。"],
+      ["spatial", "孩子能把脑中想到的东西，用图画、模型或动作表现出来。"],
+      ["spatial", "孩子对建筑、交通工具、机械、路线、房间布局或物品结构表现出兴趣。"],
+      ["spatial", "孩子在观察图片、图形或物体时，常能注意到别人忽略的细节。"],
+      ["creative", "孩子常常提出新奇的问题、想法或玩法。"],
+      ["creative", "孩子不满足于固定答案，喜欢尝试不同的做法。"],
+      ["creative", "孩子能把普通物品想象成别的用途，或创造新的游戏规则。"],
+      ["creative", "孩子在画画、写作、搭建、表演或游戏中，常有自己的独特设定。"],
+      ["creative", "孩子面对限制条件时，能想出替代方案或变通办法。"],
+      ["creative", "孩子喜欢幻想未来、发明东西、设计角色、世界或故事。"],
+      ["music", "孩子对旋律、节奏、音色或声音变化比较敏感。"],
+      ["music", "孩子容易记住歌曲、节奏、配乐或听过的声音。"],
+      ["music", "孩子喜欢唱歌、哼旋律、打节拍、跳节奏或模仿声音。"],
+      ["music", "孩子听音乐时，会表现出明显的情绪反应或身体反应。"],
+      ["music", "孩子能分辨声音的高低、快慢、强弱或不同乐器的声音。"],
+      ["music", "孩子会主动哼唱、改编旋律、编节奏，或用声音表现情绪和想法。"],
+      ["body", "孩子学习新的运动动作时，通常上手较快。"],
+      ["body", "孩子在跑跳、球类、舞蹈、体操、武术或户外活动中表现积极。"],
+      ["body", "孩子的手部操作比较灵活，比如剪纸、拼装、手工、绘画或工具使用。"],
+      ["body", "孩子能较好地控制身体平衡、力量、速度或动作节奏。"],
+      ["body", "孩子喜欢通过身体动作来表达情绪、故事或想法。"],
+      ["body", "孩子在运动或操作类任务中，愿意反复练习以做得更好。"],
+      ["nature", "孩子喜欢观察动物、植物、天气、星空、石头、昆虫或自然现象。"],
+      ["nature", "孩子经常追问事物背后的原因，例如“为什么会这样”。"],
+      ["nature", "孩子喜欢做小实验、拆装物品、观察变化或验证自己的猜想。"],
+      ["nature", "孩子对机器、工具、材料、身体、宇宙或自然规律表现出兴趣。"],
+      ["nature", "孩子能长时间观察一个现象，并注意到其中的变化。"],
+      ["nature", "孩子会把自己的发现告诉别人，或尝试记录、分类、比较。"],
+      ["social", "孩子能较快察觉别人的情绪变化或人际氛围。"],
+      ["social", "孩子在和同伴活动时，有时会提出主意、安排玩法，或帮助大家继续合作。"],
+      ["social", "孩子能理解别人为什么高兴、生气、难过或不愿意参与。"],
+      ["social", "孩子在冲突中，有时能尝试协调、解释或提出折中办法。"],
+      ["social", "孩子和不同年龄的人交流时，有时能根据对方反应调整说法或行为。"],
+      ["social", "孩子愿意帮助别人，或在团队活动中承担一定责任。"],
+      ["drive", "孩子遇到真正感兴趣的事情时，能持续投入较长时间。"],
+      ["drive", "孩子对感兴趣的事，会主动练习、询问、查找资料，或继续寻找相关内容。"],
+      ["drive", "孩子在某些事情上有明显的坚持，不容易因为一点困难就放弃。"],
+      ["drive", "孩子会对自己的作品、表现或结果提出改进想法。"],
+      ["drive", "孩子有时会自己提出想完成的事，比如做出一个作品、学会一个动作或解决一个问题。"],
+      ["drive", "孩子在被适当鼓励后，愿意挑战比当前水平稍难的任务。"],
+      ["aesthetic", "孩子对音乐、画面、故事、表演、自然景色或人物情感有较强感受。"],
+      ["aesthetic", "孩子对“美不美”“好不好看”“像不像”“有没有感觉”比较在意。"],
+      ["aesthetic", "孩子容易被故事、电影、音乐、绘画或他人的经历打动。"],
+      ["aesthetic", "孩子会用画画、语言、音乐、动作、装扮或作品表达自己的情绪。"],
+      ["aesthetic", "孩子对公平、规则、评价、被误解或他人的感受比较在意，并会表现出自己的反应。"],
+      ["aesthetic", "孩子在审美选择上有自己的偏好，并能说明自己为什么喜欢或不喜欢。"]
+    ].map((item, index) => ({ id: index + 1, dimension: item[0], text: item[1] }));
+
+    const answers = [
+      { value: 1, label: "很少如此" },
+      { value: 2, label: "偶尔如此" },
+      { value: 3, label: "有时如此" },
+      { value: 4, label: "经常如此" },
+      { value: 5, label: "非常符合" },
+      { value: null, label: "未接触/不了解" }
+    ];
+
+    const state = {
+      age: "",
+      current: 0,
+      responses: Array(questions.length).fill(undefined)
+    };
+
+    const el = {
+      ageGrid: document.getElementById("ageGrid"),
+      startBtn: document.getElementById("startBtn"),
+      intro: document.getElementById("intro"),
+      questionCard: document.getElementById("questionCard"),
+      resultCard: document.getElementById("resultCard"),
+      questionCount: document.getElementById("questionCount"),
+      remainingCount: document.getElementById("remainingCount"),
+      dimensionTag: document.getElementById("dimensionTag"),
+      questionText: document.getElementById("questionText"),
+      answers: document.getElementById("answers"),
+      prevBtn: document.getElementById("prevBtn"),
+      nextBtn: document.getElementById("nextBtn"),
+      restartBtn: document.getElementById("restartBtn"),
+      resultTitle: document.getElementById("resultTitle"),
+      resultIntro: document.getElementById("resultIntro"),
+      topTags: document.getElementById("topTags"),
+      scoreTable: document.getElementById("scoreTable"),
+      summaryAdvice: document.getElementById("summaryAdvice"),
+      adviceGrid: document.getElementById("adviceGrid"),
+      activityList: document.getElementById("activityList"),
+      copyBtn: document.getElementById("copyBtn"),
+      retakeBtn: document.getElementById("retakeBtn"),
+      radar: document.getElementById("radar")
+    };
+
+    function init() {
+      renderAgeOptions();
+      bindEvents();
+      renderQuestion();
+    }
+
+    function bindEvents() {
+      el.startBtn.addEventListener("click", () => {
+      el.intro.classList.add("hidden");
+      el.questionCard.classList.add("active");
+      el.resultCard.classList.remove("active");
+      document.body.classList.remove("result-mode");
+      document.body.classList.add("test-mode");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      el.prevBtn.addEventListener("click", () => moveQuestion(-1));
+      el.nextBtn.addEventListener("click", () => {
+        if (state.current === questions.length - 1) {
+          showResults();
+        } else {
+          moveQuestion(1);
+        }
+      });
+      el.restartBtn.addEventListener("click", resetAll);
+      el.retakeBtn.addEventListener("click", resetAll);
+      el.copyBtn.addEventListener("click", copyResultText);
+    }
+
+    function renderAgeOptions() {
+      el.ageGrid.innerHTML = "";
+      ageGroups.forEach(group => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "age-option";
+        btn.innerHTML = `<strong>${group.label}</strong><br><span class="small">${group.note}</span>`;
+        btn.addEventListener("click", () => {
+          state.age = group.id;
+          document.querySelectorAll(".age-option").forEach(item => item.classList.remove("active"));
+          btn.classList.add("active");
+          el.startBtn.disabled = false;
+        });
+        el.ageGrid.appendChild(btn);
+      });
+    }
+
+    function renderQuestion() {
+      const question = questions[state.current];
+      const dimension = dimensions.find(item => item.id === question.dimension);
+      const answered = state.responses.filter(item => item !== undefined).length;
+      el.questionCount.textContent = `第 ${state.current + 1} / ${questions.length} 题`;
+      el.remainingCount.textContent = `剩余 ${questions.length - answered} 题`;
+      el.dimensionTag.textContent = dimension.name;
+      el.questionText.textContent = question.text;
+      el.prevBtn.disabled = state.current === 0;
+      el.nextBtn.textContent = state.current === questions.length - 1 ? "查看结果" : "下一题";
+      el.nextBtn.disabled = state.responses[state.current] === undefined;
+      renderAnswers();
+    }
+
+    function renderAnswers() {
+      el.answers.innerHTML = "";
+      answers.forEach((answer, index) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "answer-option";
+        if (state.responses[state.current] === answer.value) btn.classList.add("active");
+        const label = answer.value === null ? "?" : answer.value;
+        btn.innerHTML = `<span class="answer-score">${label}</span><span>${answer.label}</span>`;
+        btn.addEventListener("click", () => {
+          state.responses[state.current] = answer.value;
+          renderQuestion();
+        });
+        el.answers.appendChild(btn);
+      });
+    }
+
+    function moveQuestion(direction) {
+      const next = state.current + direction;
+      if (next < 0 || next >= questions.length) return;
+      state.current = next;
+      renderQuestion();
+    }
+
+    function getStats() {
+      return dimensions.map(dimension => {
+        const items = questions
+          .map((question, index) => ({ ...question, response: state.responses[index] }))
+          .filter(question => question.dimension === dimension.id);
+        const validItems = items.filter(item => typeof item.response === "number");
+        const answered = items.filter(item => item.response !== undefined).length;
+        const unknown = items.filter(item => item.response === null).length;
+        const total = validItems.reduce((sum, item) => sum + item.response, 0);
+        const avg = validItems.length ? total / validItems.length : 0;
+        return {
+          ...dimension,
+          answered,
+          unknown,
+          valid: validItems.length,
+          total,
+          avg
+        };
+      });
+    }
+
+    function getLevel(stat) {
+      if (stat.valid < 3) return { text: "接触不足", cls: "limited" };
+      if (stat.avg >= 4.2) return { text: "明显偏向", cls: "high" };
+      if (stat.avg >= 3.5) return { text: "值得培养", cls: "good" };
+      if (stat.avg >= 2.8) return { text: "继续观察", cls: "watch" };
+      return { text: "目前不突出", cls: "low" };
+    }
+
+    function showResults() {
+      const unanswered = state.responses.findIndex(item => item === undefined);
+      if (unanswered >= 0) {
+        state.current = unanswered;
+        renderQuestion();
+        return;
+      }
+
+      el.intro.classList.add("hidden");
+      el.questionCard.classList.remove("active");
+      el.resultCard.classList.add("active");
+      document.body.classList.add("result-mode");
+      document.body.classList.remove("test-mode");
+      renderResults();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function renderResults() {
+      const stats = getStats();
+      const ranked = stats
+        .filter(stat => stat.valid >= 3)
+        .sort((a, b) => b.avg - a.avg);
+      const top = ranked.slice(0, 3);
+      const ageText = ageGroups.find(group => group.id === state.age)?.label || "未选择年龄";
+
+      el.resultTitle.textContent = "孩子的天赋偏向画像";
+      el.resultIntro.textContent = `${ageText}儿童观察结果。以下内容反映最近一段时间较常出现的兴趣和行为线索，适合用于安排体验和家庭支持。`;
+      el.topTags.innerHTML = top.map((item, index) => `<span class="top-tag">${index + 1}. ${item.name}</span>`).join("");
+
+      el.scoreTable.innerHTML = stats.map(stat => {
+        const level = getLevel(stat);
+        const score = stat.valid ? stat.avg.toFixed(1) : "不计";
+        return `
+          <div class="score-row">
+            <span>${stat.name}</span>
+            <strong>${score}</strong>
+            <span class="level ${level.cls}">${level.text}</span>
+          </div>
+        `;
+      }).join("");
+
+      el.summaryAdvice.textContent = buildSummary(top, stats);
+      el.adviceGrid.innerHTML = top.map(item => `
+        <section class="result-section">
+          <h2>${item.name}</h2>
+          <p>${item.description}</p>
+          <div class="advice-block">
+            <h3>家庭培养建议</h3>
+            <p>${item.advice}</p>
+          </div>
+        </section>
+      `).join("");
+
+      const activities = [...new Set(top.flatMap(item => item.activities))].slice(0, 9);
+      el.activityList.innerHTML = activities.map(item => `<li>${item}</li>`).join("");
+
+      drawRadar(stats);
+      window.latestResultText = buildPlainResult(stats, top);
+    }
+
+    function buildSummary(top, stats) {
+      const limited = stats.filter(stat => stat.valid < 3).map(stat => stat.name);
+      const topNames = top.map(item => item.name).join("、") || "暂无明显维度";
+      const ageLine = getAgeAdvice();
+      const limitedLine = limited.length ? `其中 ${limited.join("、")} 的有效作答较少，可能是接触机会不足，当前分数不宜解读为没有潜力。` : "";
+      return `当前较明显的观察线索集中在 ${topNames}。建议优先提供低压力、可选择、能持续观察的体验机会，重点看孩子是否主动投入、是否愿意反复尝试、是否能逐步完成作品或任务。${ageLine}${limitedLine}`;
+    }
+
+    function getAgeAdvice() {
+      if (state.age === "3-5") return "这个年龄段更适合通过游戏和生活体验观察，不建议过早专项训练。";
+      if (state.age === "6-8") return "这个年龄段适合广泛尝试，家长可以记录孩子在哪些活动中更愿意继续。";
+      if (state.age === "9-12") return "这个年龄段可以增加项目式学习，帮助孩子从兴趣走向方法和作品。";
+      if (state.age === "13-15") return "这个年龄段可以关注长期投入、资源匹配和阶段性目标。";
+      return "";
+    }
+
+    function drawRadar(stats) {
+      const canvas = el.radar;
+      const ctx = canvas.getContext("2d");
+      const size = canvas.width;
+      const center = size / 2;
+      const radius = 170;
+      ctx.clearRect(0, 0, size, size);
+      ctx.font = "24px sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      for (let ring = 1; ring <= 5; ring++) {
+        ctx.beginPath();
+        stats.forEach((stat, index) => {
+          const angle = Math.PI * 2 * index / stats.length - Math.PI / 2;
+          const r = radius * ring / 5;
+          const x = center + Math.cos(angle) * r;
+          const y = center + Math.sin(angle) * r;
+          if (index === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        });
+        ctx.closePath();
+        ctx.strokeStyle = ring === 5 ? "#bfd2ca" : "#e1ebe7";
+        ctx.lineWidth = ring === 5 ? 2 : 1;
+        ctx.stroke();
+      }
+
+      stats.forEach((stat, index) => {
+        const angle = Math.PI * 2 * index / stats.length - Math.PI / 2;
+        const x = center + Math.cos(angle) * (radius + 38);
+        const y = center + Math.sin(angle) * (radius + 38);
+        ctx.fillStyle = "#65736f";
+        ctx.fillText(stat.short, x, y);
+      });
+
+      ctx.beginPath();
+      stats.forEach((stat, index) => {
+        const angle = Math.PI * 2 * index / stats.length - Math.PI / 2;
+        const value = stat.valid ? stat.avg / 5 : 0;
+        const x = center + Math.cos(angle) * radius * value;
+        const y = center + Math.sin(angle) * radius * value;
+        if (index === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.closePath();
+      ctx.fillStyle = "rgba(40, 121, 101, .18)";
+      ctx.strokeStyle = "#287965";
+      ctx.lineWidth = 4;
+      ctx.fill();
+      ctx.stroke();
+    }
+
+    function buildPlainResult(stats, top) {
+      const lines = [
+        "儿童天赋偏向观察问卷结果",
+        `年龄段：${ageGroups.find(group => group.id === state.age)?.label || "未选择"}`,
+        "",
+        `前三项偏向：${top.map(item => item.name).join("、") || "暂无明显维度"}`,
+        "",
+        "各维度得分："
+      ];
+      stats.forEach(stat => {
+        const level = getLevel(stat);
+        const score = stat.valid ? stat.avg.toFixed(1) : "不计分";
+        lines.push(`${stat.name}：${score}，${level.text}`);
+      });
+      lines.push("", "综合建议：", buildSummary(top, stats));
+      return lines.join("\n");
+    }
+
+    function copyResultText() {
+      const text = window.latestResultText || "";
+      if (!text) return;
+      navigator.clipboard.writeText(text).then(() => {
+        el.copyBtn.textContent = "已复制";
+        setTimeout(() => el.copyBtn.textContent = "复制文字版结果", 1200);
+      }).catch(() => {
+        alert(text);
+      });
+    }
+
+    function resetAll() {
+      state.current = 0;
+      state.responses = Array(questions.length).fill(undefined);
+      el.intro.classList.remove("hidden");
+      el.questionCard.classList.remove("active");
+      el.resultCard.classList.remove("active");
+      document.body.classList.remove("result-mode");
+      document.body.classList.remove("test-mode");
+      renderQuestion();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    init();
+  </script>
+</body>
+</html>
