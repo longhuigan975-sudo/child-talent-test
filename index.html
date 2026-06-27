@@ -430,6 +430,82 @@
       color: var(--muted);
     }
 
+    .advice-list {
+      display: grid;
+      gap: 8px;
+      margin: 10px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .advice-list li {
+      position: relative;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .advice-list li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: .68em;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--primary);
+    }
+
+    .strategy-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .strategy-item {
+      border-radius: var(--radius);
+      background: #f7faf8;
+      border: 1px solid var(--line);
+      padding: 11px 12px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .strategy-item strong {
+      display: block;
+      color: var(--text);
+      margin-bottom: 3px;
+    }
+
+    .profile-summary {
+      display: grid;
+      gap: 9px;
+    }
+
+    .profile-summary p {
+      margin: 0;
+    }
+
+    .profile-points {
+      display: grid;
+      gap: 7px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .profile-points li {
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .profile-points span {
+      display: inline-block;
+      min-width: 68px;
+      color: var(--text);
+      font-weight: 800;
+    }
+
     .activity-list {
       display: grid;
       gap: 9px;
@@ -612,7 +688,7 @@
             </section>
             <section class="result-section">
               <h2>综合建议</h2>
-              <p id="summaryAdvice"></p>
+              <div id="summaryAdvice"></div>
               <div class="disclaimer">本结果属于家庭观察性筛查，不能替代智力测验、创造力测验、发展评估或心理测评。如果孩子在学习、情绪、社交或行为方面同时存在明显困扰，建议咨询儿童发展或教育心理专业人员。</div>
             </section>
           </div>
@@ -735,6 +811,109 @@
         activities: ["看展后表达感受", "音乐或绘画情绪日记", "故事人物心情讨论"]
       }
     ];
+
+    const practicalGuides = {
+      language: {
+        actions: [
+          "每周固定一次 15 分钟“讲给我听”：让孩子讲一本书、一次经历或一个观点，家长只追问“为什么”和“还有呢”。",
+          "准备一个小小表达本：记录孩子说过的有意思句子、故事开头、问题和新词，每周让孩子选一个继续发展。",
+          "把表达放进真实场景：让孩子负责介绍路线、说明游戏规则、给家人讲电影情节或写一段邀请语。"
+        ],
+        observe: "观察孩子是否能从“说很多”进步到“说清楚”：有开头、理由、例子和结尾。",
+        avoid: "不要急着纠正每个用词和语法，也不要把阅读兴趣立刻变成背诵、打卡或大量写作任务。",
+        activities: ["亲子共读后讲 3 个重点", "家庭小主持", "采访长辈并复述", "给故事换结局"]
+      },
+      logic: {
+        actions: [
+          "每周做 2 次生活推理：让孩子解释购物比价、路线选择、时间安排或物品分类的理由。",
+          "玩策略游戏后做 3 句复盘：我刚才怎么赢/输、下一次换什么策略、哪里可以更快。",
+          "遇到问题先让孩子画步骤，不直接给答案；用“第一步是什么、还缺什么、怎么验证”引导。"
+        ],
+        observe: "观察孩子是否能说出推理过程，而不是只追求答案快不快、算得准不准。",
+        avoid: "不要只用刷题培养逻辑。过早追求速度会削弱孩子解释、验证和迁移能力。",
+        activities: ["棋类或策略游戏复盘", "家庭预算小任务", "分类整理挑战", "推理故事破案"]
+      },
+      spatial: {
+        actions: [
+          "安排“先画再搭”：搭建前让孩子画草图，完成后对照哪里一样、哪里变了。",
+          "给一个明确限制：比如只用 20 块积木搭桥、用纸板做能站稳的房子，训练结构思考。",
+          "把空间能力用到生活：让孩子整理书桌、规划房间路线、看地图找路或设计收纳方案。"
+        ],
+        observe: "观察孩子是否能解释结构为什么稳、路线为什么近、图形为什么这样组合。",
+        avoid: "不要只评价作品像不像、漂亮不漂亮。空间优势更应该看结构、比例、稳定性和调整过程。",
+        activities: ["积木承重挑战", "迷宫和地图设计", "纸板建筑", "房间收纳规划"]
+      },
+      creative: {
+        actions: [
+          "每周给一次开放题：同一个材料做 3 种用途、一个故事编 2 个结局、一个问题想 5 个办法。",
+          "把想法推进到作品：让孩子选一个点子，用 30 分钟做出草稿、模型、短文或表演。",
+          "建立“改一次”习惯：完成后只问一个问题，下一版你想改哪里？"
+        ],
+        observe: "观察孩子是否从“点子多”逐步发展到“能选择一个点子并完成一个版本”。",
+        avoid: "不要把创意等同于随便做，也不要每次都要求惊艳。创造力需要允许试错，也需要逐步收尾。",
+        activities: ["废旧材料发明", "新游戏规则设计", "角色和世界观设定", "同题多解挑战"]
+      },
+      music: {
+        actions: [
+          "每天 5 分钟听辨：让孩子说出音乐快慢、强弱、情绪和最明显的乐器或声音。",
+          "用身体和物品练节奏：拍手、跺脚、杯子、铅笔都可以，不急着进入正式乐器训练。",
+          "让孩子改编熟悉旋律：换节奏、换歌词、换速度，观察是否主动重复和修正。"
+        ],
+        observe: "观察孩子是否能稳定模仿节奏、记住旋律，并主动对声音做比较和表达。",
+        avoid: "不要一开始就绑定考级。音乐偏向先看听觉敏感、节奏感和主动性。",
+        activities: ["节奏接龙", "家庭声音地图", "歌曲改编", "听音乐画情绪"]
+      },
+      body: {
+        actions: [
+          "让孩子体验不同运动类型：球类、平衡、舞蹈、攀爬、手工操作，找出最愿意反复练的方向。",
+          "把动作拆小：例如投球先练站姿、瞄准、发力，再练连续命中。",
+          "给孩子记录“动作进步”：今天比昨天稳一点、快一点、协调一点，而不只看输赢。"
+        ],
+        observe: "观察孩子是否学动作快、愿意重复练习，并能根据反馈调整动作。",
+        avoid: "不要只看比赛名次。身体运动优势也包括协调、节奏、控制、手眼配合和动作表达。",
+        activities: ["平衡挑战", "球类命中练习", "舞蹈动作模仿", "精细手工任务"]
+      },
+      nature: {
+        actions: [
+          "做 7-14 天观察项目：植物生长、影子变化、天气记录、昆虫行为，每天只记录一个变化。",
+          "家庭实验用“猜想-观察-解释”：先让孩子猜结果，再动手，再讨论为什么。",
+          "给孩子一个问题本：专门记“为什么”，每周选 1 个问题查资料或做实验。"
+        ],
+        observe: "观察孩子是否能持续观察、比较变化，并愿意用证据修正自己的猜想。",
+        avoid: "不要把科学兴趣只变成背知识。真正的探索偏向要看提问、验证和记录。",
+        activities: ["植物观察日记", "浮沉实验", "影子变化记录", "拆装旧物观察结构"]
+      },
+      social: {
+        actions: [
+          "给孩子小范围组织机会：安排一次家庭游戏、分配角色、说明规则、处理分歧。",
+          "讨论真实人际情境：别人为什么不高兴？还有什么说法？怎样让大家继续合作？",
+          "让孩子练习表达边界和请求：我需要什么、我不同意什么、我可以怎么说。"
+        ],
+        observe: "观察孩子是否能理解他人感受、推动合作继续，而不只是看是否外向爱说话。",
+        avoid: "不要把领导力等同于强势或站在前面。安静型孩子也可能有很好的共情和协调能力。",
+        activities: ["家庭活动小主持", "角色分工游戏", "冲突情景讨论", "同伴合作任务"]
+      },
+      drive: {
+        actions: [
+          "帮孩子建立一个两周小项目：明确目标、材料、步骤、完成标准和展示方式。",
+          "每次只复盘 3 件事：做成了什么、卡在哪里、下一步怎么改。",
+          "把练习时间缩短但固定：每天 10-15 分钟，比偶尔一次长时间更容易形成投入。"
+        ],
+        observe: "观察孩子是否能在没有成人催促时继续做，并愿意面对一点困难。",
+        avoid: "不要把坚持变成硬扛。自我驱动需要兴趣、可见进步和合适难度共同支撑。",
+        activities: ["两周兴趣项目", "作品改进清单", "每日 10 分钟练习", "小目标看板"]
+      },
+      aesthetic: {
+        actions: [
+          "让孩子表达感受而不是只评价好坏：这幅画让你想到什么？这段音乐像什么天气？",
+          "准备情绪表达出口：画情绪、写一句感受、用动作或颜色表达一天的心情。",
+          "看电影、绘本、展览后聊人物：他为什么这样做？如果是你会怎么感受？"
+        ],
+        observe: "观察孩子是否能分辨细腻感受，并逐步把感受转化为语言、画面、音乐或行动。",
+        avoid: "不要把敏感简单看成脆弱，也不要把审美偏好强行训练成艺术技能。",
+        activities: ["情绪颜色日记", "看展后讲感受", "故事人物心理讨论", "音乐画面联想"]
+      }
+    };
 
     const questions = [
       ["language", "孩子喜欢听故事、讲故事，或主动复述自己听过、看过的内容。"],
@@ -994,39 +1173,245 @@
         `;
       }).join("");
 
-      el.summaryAdvice.textContent = buildSummary(top, stats);
-      el.adviceGrid.innerHTML = top.map(item => `
-        <section class="result-section">
-          <h2>${item.name}</h2>
-          <p>${item.description}</p>
-          <div class="advice-block">
-            <h3>家庭培养建议</h3>
-            <p>${item.advice}</p>
-          </div>
-        </section>
-      `).join("");
+      el.summaryAdvice.innerHTML = buildSummary(top, stats);
+      el.adviceGrid.innerHTML = top.map((item, index) => buildAdviceCard(item, index + 1)).join("");
 
-      const activities = [...new Set(top.flatMap(item => item.activities))].slice(0, 9);
+      const activities = buildActivityList(top, stats).slice(0, 10);
       el.activityList.innerHTML = activities.map(item => `<li>${item}</li>`).join("");
 
       drawRadar(stats);
       window.latestResultText = buildPlainResult(stats, top);
     }
 
-    function buildSummary(top, stats) {
-      const limited = stats.filter(stat => stat.valid < 3).map(stat => stat.name);
-      const topNames = top.map(item => item.name).join("、") || "暂无明显维度";
-      const ageLine = getAgeAdvice();
-      const limitedLine = limited.length ? `其中 ${limited.join("、")} 的有效作答较少，可能是接触机会不足，当前分数不宜解读为没有潜力。` : "";
-      return `当前较明显的观察线索集中在 ${topNames}。建议优先提供低压力、可选择、能持续观察的体验机会，重点看孩子是否主动投入、是否愿意反复尝试、是否能逐步完成作品或任务。${ageLine}${limitedLine}`;
+    function buildAdviceCard(item, rank) {
+      const guide = practicalGuides[item.id];
+      return `
+        <section class="result-section">
+          <h2>${rank}. ${item.name}</h2>
+          <p>${item.description}</p>
+          <div class="advice-block">
+            <h3>接下来两周可以这样做</h3>
+            <ul class="advice-list">
+              ${guide.actions.map(action => `<li>${action}</li>`).join("")}
+            </ul>
+          </div>
+          <div class="strategy-list">
+            <div class="strategy-item"><strong>观察重点</strong>${guide.observe}</div>
+            <div class="strategy-item"><strong>避免误区</strong>${guide.avoid}</div>
+          </div>
+        </section>
+      `;
     }
 
-    function getAgeAdvice() {
-      if (state.age === "3-5") return "这个年龄段更适合通过游戏和生活体验观察，不建议过早专项训练。";
-      if (state.age === "6-8") return "这个年龄段适合广泛尝试，家长可以记录孩子在哪些活动中更愿意继续。";
-      if (state.age === "9-12") return "这个年龄段可以增加项目式学习，帮助孩子从兴趣走向方法和作品。";
-      if (state.age === "13-15") return "这个年龄段可以关注长期投入、资源匹配和阶段性目标。";
-      return "";
+    function buildSummary(top, stats) {
+      const limited = stats.filter(stat => stat.valid < 3).map(stat => stat.name);
+      const profileInsight = buildProfileInsight(top, stats);
+      const cultivationLine = getCultivationAdvice(top, stats);
+      const executionLine = getExecutionFocus(top, stats);
+      const limitedLine = limited.length ? `有些方向如 ${limited.join("、")} 的有效作答较少，更可能代表接触机会不足，暂时不要据此判断孩子没有潜力。` : "";
+      return `
+        <div class="strategy-list">
+          <div class="strategy-item"><strong>当前画像</strong>${profileInsight}</div>
+          <div class="strategy-item"><strong>培养方式</strong>${cultivationLine}</div>
+          <div class="strategy-item"><strong>执行重点</strong>${executionLine}</div>
+          ${limitedLine ? `<div class="strategy-item"><strong>接触不足提醒</strong>${limitedLine}</div>` : ""}
+        </div>
+      `;
+    }
+
+    function buildProfileInsight(top, stats) {
+      if (!top.length) {
+        return `
+          <div class="profile-summary">
+            <p>本次有效信息还不够形成清晰画像，更像是“接触机会不足”而不是能力不突出。</p>
+            <ul class="profile-points">
+              <li><span>怎么看</span>先不要下判断，优先补足不同类型的体验机会。</li>
+              <li><span>看什么</span>观察孩子是否主动靠近、是否愿意重复、是否能说出喜欢或不喜欢的原因。</li>
+            </ul>
+          </div>
+        `;
+      }
+
+      const validStats = stats.filter(stat => stat.valid >= 3).sort((a, b) => b.avg - a.avg);
+      const primary = top[0];
+      const second = top[1];
+      const scoreText = top.map(item => `${item.short}${item.avg.toFixed(1)}`).join("、");
+      const typeLine = getProfileType(top, validStats);
+      const behaviorLine = getBehaviorLens(top);
+      const meaningLine = getProfileMeaning(top, validStats, stats);
+      const compareLine = second ? `${primary.short}比${second.short}高 ${(primary.avg - second.avg).toFixed(1)} 分，${getGapMeaning(primary.avg - second.avg)}` : "目前只有一个方向达到有效观察数量，画像还需要继续补充。";
+
+      return `
+        <div class="profile-summary">
+          <p>${typeLine}</p>
+          <ul class="profile-points">
+            <li><span>分数形态</span>${scoreText}。${compareLine}</li>
+            <li><span>表现线索</span>${behaviorLine}</li>
+            <li><span>解读提醒</span>${meaningLine}</li>
+          </ul>
+        </div>
+      `;
+    }
+
+    function getProfileType(top, validStats) {
+      const highCount = validStats.filter(stat => stat.avg >= 4.2).length;
+      const primary = top[0];
+      const second = top[1];
+      const gap = second ? primary.avg - second.avg : 0;
+      const ids = top.map(item => item.id);
+
+      if (highCount >= 4) return "这是一个“多点开花型”画像：孩子在多个方向都有明显线索，当前重点不是马上定赛道，而是筛选最能持续投入的方向。";
+      if (gap >= 0.75) return `这是一个“主轴清晰型”画像：${primary.short}明显领先，近期可以把它作为主要观察入口。`;
+      if (second && gap < 0.25) return "这是一个“均衡探索型”画像：前三方向差距很小，说明孩子可能还在多种兴趣之间探索，不适合过早贴单一标签。";
+      if (ids.includes("drive")) return "这是一个“兴趣能推进型”画像：优势不只在兴趣本身，也包括愿意投入、练习或改进的倾向。";
+      return `这是一个“双核心发展型”画像：${primary.short}和${second?.short || "另一优势"}都比较突出，适合把两个方向组合成真实任务来观察。`;
+    }
+
+    function getBehaviorLens(top) {
+      const ids = top.map(item => item.id);
+      const primary = top[0]?.id || "";
+      if (ids.includes("creative") && ids.includes("spatial")) return "孩子可能不只是“爱画画”或“爱搭东西”，而是喜欢把脑中的想法变成结构、模型、场景或作品。";
+      if (ids.includes("logic") && ids.includes("nature")) return "孩子可能更容易被“为什么会这样”“怎么验证”吸引，适合在观察、实验、分类和推理中表现能力。";
+      if (ids.includes("language") && ids.includes("social")) return "孩子的优势可能体现在把想法说清楚、理解别人、组织对话或推动合作，而不只是词汇量多。";
+      if (ids.includes("music") && ids.includes("aesthetic")) return "孩子可能对声音、节奏、画面和情绪反应更细，适合通过音乐、绘画、故事或表演表达感受。";
+      if (ids.includes("body") && ids.includes("drive")) return "孩子可能在动作学习、练习反馈和持续改进中更容易进入状态，适合有目标、有节奏的训练。";
+
+      const lines = {
+        language: "孩子可能在讲述、阅读、解释、复述或表达观点时更容易进入状态。",
+        logic: "孩子可能在找规律、分析原因、比较方案和解决问题时更有兴趣。",
+        spatial: "孩子可能在搭建、观察结构、看图形、设计路线或处理空间关系时更敏感。",
+        creative: "孩子可能在改玩法、编设定、提出新点子或寻找替代方案时更活跃。",
+        music: "孩子可能对节奏、旋律、音色和声音变化更敏感，也更容易用声音表达。",
+        body: "孩子可能在运动、动作模仿、手部操作或身体表达中更愿意反复练习。",
+        nature: "孩子可能对自然现象、实验变化、工具材料和因果关系更好奇。",
+        social: "孩子可能在理解别人、协调关系、组织活动或承担责任时更有表现。",
+        drive: "孩子可能在真正感兴趣的事情上更能主动推进、练习和改进。",
+        aesthetic: "孩子可能对美感、情绪、故事人物和他人经历有更细腻的反应。"
+      };
+      return lines[primary] || "孩子的表现还需要通过更多真实活动继续观察。";
+    }
+
+    function getProfileMeaning(top, validStats, stats) {
+      const limitedCount = stats.filter(stat => stat.valid < 3).length;
+      const primary = top[0];
+      const highCount = validStats.filter(stat => stat.avg >= 4.2).length;
+      const third = top[2];
+
+      if (limitedCount >= 3) return "有多个方向接触不足，这份画像只能说明“已接触活动中的明显线索”，不能说明孩子没有其他潜力。";
+      if (primary.avg < 3.5) return "前三项只是相对更明显，还没有达到稳定偏向。建议继续观察，不急着投入长期课程。";
+      if (highCount >= 4) return "高分方向较多时，真正要看的不是哪个最高，而是哪一个方向孩子愿意持续做、遇到困难后还愿意回来。";
+      if (third && primary.avg - third.avg < 0.35) return "前三项差距很小，说明孩子可能有复合型兴趣。建议用跨领域任务观察，而不是只报单一课程。";
+      if (primary.avg >= 4.2) return "第一优势已经比较明显，可以作为近期培养主线，但仍要用低压力任务验证持续性。";
+      return "这个结果更适合作为家庭观察线索，而不是定论。接下来要看孩子在真实活动中的主动性、持续性和复盘能力。";
+    }
+
+    function getGapMeaning(gap) {
+      if (gap >= 0.75) return "领先比较明显，可以先围绕第一优势安排体验。";
+      if (gap < 0.25) return "差距很小，暂时不要只押一个方向。";
+      return "有一定差距，但仍建议把前两项组合起来观察。";
+    }
+
+    function getCultivationAdvice(top, stats) {
+      const ids = top.map(item => item.id);
+      const primary = top[0]?.id || "";
+      const rhythm = getAgeRhythm();
+      const highCount = stats.filter(stat => stat.valid >= 3 && stat.avg >= 4.2).length;
+
+      let method = "";
+      if (ids.includes("creative") && ids.includes("spatial")) {
+        method = "用“先设计、再做出来、最后改一版”的方式培养。比起直接报单一课程，更适合提供积木、纸板、画图、模型、工具等材料，让孩子把想法落成可见作品。";
+      } else if (ids.includes("logic") && ids.includes("nature")) {
+        method = "用“问题驱动”的方式培养。让孩子先提出猜想，再观察或实验，最后用记录说明结论，重点训练证据意识和解释能力。";
+      } else if (ids.includes("language") && ids.includes("social")) {
+        method = "用“真实表达场景”培养。让孩子承担讲解、采访、主持、说明规则、整理观点这类任务，比单纯背诵或写作训练更能发挥优势。";
+      } else if (ids.includes("music") && ids.includes("aesthetic")) {
+        method = "用“感受转表达”的方式培养。先让孩子描述听到、看到、想到的感受，再尝试唱、画、写、演，不急着把兴趣立刻变成技术训练。";
+      } else if (ids.includes("body") && ids.includes("drive")) {
+        method = "用“短时高反馈”的方式培养。选择一个动作或技能目标，拆成可练习的小步骤，让孩子看到每天一点点进步。";
+      } else if (primary === "language") {
+        method = "优先给孩子稳定表达机会。可以从复述、讲观点、采访、说明规则开始，慢慢过渡到写作、演讲或辩论。";
+      } else if (primary === "logic") {
+        method = "优先给孩子解决真实问题的机会。购物比较、路线规划、游戏策略、分类整理都可以成为逻辑训练，不必只靠刷题。";
+      } else if (primary === "spatial") {
+        method = "优先让孩子多做看得见、摸得到的结构任务。搭建、画图、地图、模型和收纳规划，比单纯看图片更能检验空间能力。";
+      } else if (primary === "creative") {
+        method = "优先保护孩子的点子，同时帮他完成一个版本。培养重点不是让想法更多，而是从很多想法里选一个做出来。";
+      } else if (primary === "music") {
+        method = "优先从听辨、模仿、节奏和改编开始。先看孩子是否愿意主动重复、修正和表达声音感受，再考虑系统乐器学习。";
+      } else if (primary === "body") {
+        method = "优先提供多种运动和操作体验，观察孩子在哪类动作里最愿意练。球类、舞蹈、攀爬、手工工具都可以先轻量尝试。";
+      } else if (primary === "nature") {
+        method = "优先做连续观察和小实验。让孩子记录变化、比较差异、解释原因，比只记知识点更适合自然探索偏向。";
+      } else if (primary === "social") {
+        method = "优先给孩子小范围协作机会。家庭活动主持、角色分工、规则说明、冲突讨论，比简单要求外向更准确。";
+      } else if (primary === "drive") {
+        method = "优先建立一个孩子自己认可的小目标。目标要能完成、能展示、能复盘，让自我驱动变成稳定行动。";
+      } else if (primary === "aesthetic") {
+        method = "优先让孩子把感受说出来、画出来或做出来。审美和情绪敏感不一定马上对应艺术课程，先看表达方式。";
+      } else {
+        method = "先扩大低压力体验，再连续观察孩子在哪些活动中主动靠近、愿意重复、能提出自己的想法。";
+      }
+
+      if (highCount >= 4) {
+        method += " 这次高分方向较多，建议先不要同时加很多课程，先选一个最容易坚持的项目做两周。";
+      }
+
+      return `${method}${rhythm}`;
+    }
+
+    function getAgeRhythm() {
+      if (state.age === "3-5") return " 当前年龄更适合游戏化体验，每次 10-20 分钟，重点看主动性和重复意愿。";
+      if (state.age === "6-8") return " 当前年龄适合广泛试探，每周安排 2-3 次轻体验，用记录帮助筛选真正愿意继续的方向。";
+      if (state.age === "9-12") return " 当前年龄可以进入小项目，例如完成一个模型、一份观察记录、一次展示或一组作品。";
+      if (state.age === "13-15") return " 当前年龄要让孩子参与选择和目标设定，家长更多提供资源、反馈和边界，而不是全程安排。";
+      return " 建议连续观察 2-4 周，再决定是否投入更系统的资源。";
+    }
+
+    function getCombinationAdvice(top) {
+      const ids = top.map(item => item.id);
+      if (ids.includes("creative") && ids.includes("spatial")) return "这类组合适合“设计-搭建-改进”的任务，孩子可能需要材料、空间和反复修改的机会。";
+      if (ids.includes("logic") && ids.includes("nature")) return "这类组合适合“提出问题-做实验-记录结果”的学习方式，家长可以多用证据和验证来引导。";
+      if (ids.includes("language") && ids.includes("social")) return "这类组合适合表达、组织和沟通类任务，可尝试主持、讲解、采访、辩论或小组项目。";
+      if (ids.includes("music") && ids.includes("aesthetic")) return "这类组合适合声音、情绪和审美表达，建议先做感受表达，再决定是否进入正式课程。";
+      if (ids.includes("body") && ids.includes("drive")) return "这类组合适合有明确动作目标和可见进步的练习，训练应短时、稳定、有反馈。";
+      if (ids.includes("drive")) return "因为自我驱动进入前三，建议给孩子一个连续两周的小项目，看他是否能计划、推进和复盘。";
+      return "建议不要只选一个方向训练，而是用 2-3 个优势组合成具体任务，让孩子在真实活动中表现能力。";
+    }
+
+    function getExecutionFocus(top, stats) {
+      const ids = top.map(item => item.id);
+      const primary = top[0]?.id || "";
+      const drive = stats.find(stat => stat.id === "drive");
+      const social = stats.find(stat => stat.id === "social");
+      const aesthetic = stats.find(stat => stat.id === "aesthetic");
+      const validStats = stats.filter(stat => stat.valid >= 3);
+      const sorted = [...validStats].sort((a, b) => b.avg - a.avg);
+      const topGap = sorted.length >= 2 ? sorted[0].avg - sorted[1].avg : 0;
+
+      if (!top.length) return "先补足接触机会。每个方向选择一个低压力活动体验一次，记录孩子是否愿意开始、是否愿意继续、是否能说出感受。";
+      if (drive && drive.valid >= 3 && drive.avg < 3.0) return "先解决“能不能持续”的问题。每次任务只设一个可见成果，例如讲完 3 分钟、搭出第一版、记录 3 天，不要一开始要求长期坚持。";
+      if (social && social.valid >= 3 && social.avg < 3.0 && ids.includes("language")) return "表达优势需要先从安全场景开始。建议先在家庭或一对一场景练讲述，再逐步过渡到小组展示，避免直接放到强竞争环境。";
+      if (aesthetic && aesthetic.valid >= 3 && aesthetic.avg >= 4.0) return "执行时要给情绪出口。作品或表现被评价后，先让孩子说出哪里满意、哪里难受、下一版想改什么，再谈技巧提升。";
+      if (topGap < 0.25 && sorted.length >= 3) return "前三项分数接近，执行上不要过早定一个“主天赋”。建议连续两周安排三个小任务，比较孩子在哪个任务里更主动、更能收尾。";
+      if (ids.includes("creative") && !ids.includes("drive")) return "创意方向要特别关注收尾。每次只要求完成一个最小作品，不追求完美，但要有成品、有命名、有一次修改。";
+      if (ids.includes("logic") || ids.includes("nature")) return "每次活动都保留记录。用“问题、猜想、过程、发现”四格记录，帮助孩子把兴趣变成可复盘的能力。";
+      if (ids.includes("body") || ids.includes("music")) return "执行重点是稳定练习和即时反馈。单次练习不宜太长，最好让孩子当天就能看到一个小进步。";
+      if (primary === "social") return "把任务放在真实合作里检验。可以让孩子负责一次规则说明、角色分工或冲突调解，然后复盘哪句话有效、哪里需要调整。";
+      if (primary === "drive") return "给孩子选择权和完成标准。让他自己定一个两周目标，家长只负责帮忙拆步骤、准备材料和固定复盘时间。";
+      return "建议采用“体验-记录-复盘”的节奏：先给机会，再记录投入程度，最后根据持续兴趣决定是否增加资源。";
+    }
+
+    function buildActivityList(top, stats) {
+      const base = [];
+      top.forEach(item => base.push(...practicalGuides[item.id].activities));
+      const ids = top.map(item => item.id);
+      if (ids.includes("creative") && ids.includes("spatial")) base.unshift("设计一个未来城市：画草图、搭模型、讲用途、改一版");
+      if (ids.includes("logic") && ids.includes("nature")) base.unshift("做一个 7 天小实验：提出猜想、每天记录、最后解释结果");
+      if (ids.includes("language") && ids.includes("social")) base.unshift("做一次家庭采访：准备问题、采访、整理成 3 分钟分享");
+      if (ids.includes("drive")) base.unshift("两周兴趣项目：设一个小目标，每 3 天复盘一次");
+      const lowExposure = stats.filter(stat => stat.valid < 3).map(stat => stat.id);
+      if (lowExposure.length) base.push("从低接触方向各选一个轻体验活动，先观察孩子是否愿意接近");
+      return [...new Set(base)];
     }
 
     function drawRadar(stats) {
@@ -1095,8 +1480,14 @@
         const score = stat.valid ? stat.avg.toFixed(1) : "不计分";
         lines.push(`${stat.name}：${score}，${level.text}`);
       });
-      lines.push("", "综合建议：", buildSummary(top, stats));
+      lines.push("", "综合建议：", htmlToText(buildSummary(top, stats)));
       return lines.join("\n");
+    }
+
+    function htmlToText(html) {
+      const div = document.createElement("div");
+      div.innerHTML = html;
+      return div.textContent.replace(/\s+/g, " ").trim();
     }
 
     function copyResultText() {
